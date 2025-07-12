@@ -1,0 +1,68 @@
+﻿@model POS_KFC.Models.Product
+@{
+    ViewBag.Title = "Delete";
+}
+
+<link href="~/Content/css/DeleteProducts.css" rel="stylesheet" type="text/css" />
+
+<div class="delete-container">
+    <div class="delete-header">
+        <div class="warning-icon">⚠️</div>
+        <h2 class="delete-title">Xóa Sản Phẩm</h2>
+        <h3 class="delete-subtitle">Bạn có chắc chắn muốn xóa sản phẩm này?</h3>
+    </div>
+
+    <div class="product-card">
+        <h4 class="product-title">Thông Tin Sản Phẩm</h4>
+
+        <div class="product-details">
+            <div class="detail-item">
+                <span class="detail-label">Tên sản phẩm</span>
+                <div class="detail-value">@Html.DisplayFor(model => model.ProductName)</div>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Giá bán</span>
+                <div class="detail-value price-value">@Html.DisplayFor(model => model.Price)</div>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Mô tả</span>
+                <div class="detail-value">@Html.DisplayFor(model => model.Description)</div>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Hình ảnh</span>
+                <div class="detail-value">
+                    @if (!string.IsNullOrEmpty(Model.ProductImage))
+                    {
+                        <img src="~/Content/images/products/@Model.ProductImage" alt="@Model.ProductName" style="max-width: 100px; max-height: 100px; border-radius: 4px; border: 2px solid var(--kfc-light-red);" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">Không có hình ảnh</span>
+                    }
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Loại sản phẩm</span>
+                <div class="detail-value">@Html.DisplayFor(model => model.ProductType.ProductTypeName)</div>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Khuyến mãi</span>
+                <div class="detail-value">@Html.DisplayFor(model => model.Promotion.PromotionName)</div>
+            </div>
+        </div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-actions">
+            <input type="submit" value="Xóa" class="btn-delete" />
+            @Html.ActionLink("Quay Lại Danh Sách", "Index", null, new { @class = "btn-back" })
+        </div>
+    }
+</div>

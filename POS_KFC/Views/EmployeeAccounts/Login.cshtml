@@ -1,0 +1,53 @@
+﻿@model POS_KFC.Models.EmployeeAccount
+@{
+    ViewBag.Title = "Đăng nhập";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/css/Login.css" rel="stylesheet" type="text/css" />
+
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <i class="bi bi-box-arrow-in-right"></i>
+            <h3>Đăng nhập hệ thống</h3>
+        </div>
+
+        @using (Html.BeginForm("Login", "EmployeeAccounts", FormMethod.Post, new { @class = "needs-validation" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                <label class="form-label" for="AccountName">Tên đăng nhập</label>
+                @Html.TextBoxFor(m => m.AccountName, new { @class = "form-control", @placeholder = "Tên đăng nhập" })
+                @Html.ValidationMessageFor(m => m.AccountName, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="Password">Mật khẩu</label>
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Mật khẩu" })
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-check">
+                @Html.CheckBox("rememberMe", false, new { @class = "form-check-input", id = "rememberMe" })
+                <label class="form-check-label" for="rememberMe">Ghi nhớ đăng nhập</label>
+            </div>
+
+            if (ViewBag.LoginError != null)
+            {
+                <div class="alert alert-danger text-center">
+                    @ViewBag.LoginError
+                </div>
+            }
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-login">Đăng nhập</button>
+            </div>
+
+            <div class="mt-3 text-center text-muted" style="font-size: 0.9rem;">
+                Sử dụng tài khoản <strong>nhuthuy6666</strong> với mật khẩu <strong>nhuthuy666666</strong> để trải nghiệm.
+            </div>
+        }
+    </div>
+</div>

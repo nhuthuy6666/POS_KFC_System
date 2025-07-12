@@ -1,0 +1,385 @@
+﻿.profile-container {
+    background-color: var(--light-gray);
+    min-height: 100vh;
+}
+
+.profile-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.profile-header {
+    background: linear-gradient(135deg, var(--kfc-red) 0%, var(--kfc-dark-red) 100%);
+    color: white;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+}
+
+    .profile-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        opacity: 0.3;
+    }
+
+    .profile-header .content {
+        position: relative;
+        z-index: 1;
+    }
+
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid white;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    margin: 0 auto 1rem;
+    display: block;
+    object-fit: cover;
+}
+
+.profile-name {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.profile-position {
+    background-color: var(--kfc-gold);
+    color: var(--dark-text);
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    display: inline-block;
+    margin-top: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.info-section {
+    padding: 2rem;
+}
+
+.section-title {
+    color: var(--kfc-red);
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid var(--kfc-light-red);
+    position: relative;
+}
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -3px;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background-color: var(--kfc-red);
+    }
+
+.info-table {
+    border: none;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+    .info-table th {
+        background: var(--kfc-light-red);
+        color: var(--dark-text);
+        font-weight: 600;
+        padding: 1rem;
+        border: none;
+        width: 35%;
+    }
+
+    .info-table td {
+        padding: 1rem;
+        border: none;
+        color: var(--dark-text);
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .info-table tr:last-child td {
+        border-bottom: none;
+    }
+
+.schedule-table {
+    border: none;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+    .schedule-table thead th {
+        background: var(--kfc-red);
+        color: white;
+        font-weight: 600;
+        padding: 1rem;
+        border: none;
+        text-align: center;
+    }
+
+    .schedule-table tbody td {
+        padding: 1rem;
+        text-align: center;
+        border: none;
+        color: var(--dark-text);
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .schedule-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .schedule-table tbody tr:nth-child(even) {
+        background-color: var(--light-gray);
+    }
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.btn-kfc-primary {
+    background: linear-gradient(135deg, var(--kfc-red) 0%, var(--kfc-dark-red) 100%);
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(228, 0, 43, 0.3);
+}
+
+    .btn-kfc-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(228, 0, 43, 0.4);
+        color: white;
+        text-decoration: none;
+    }
+
+.btn-kfc-secondary {
+    background: var(--muted-text);
+    color: black;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+}
+
+    .btn-kfc-secondary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+        color: white;
+        text-decoration: none;
+        background: #5a6268;
+    }
+
+.btn-kfc-update {
+    background: var(--kfc-gold);
+    color: var(--dark-text);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+    .btn-kfc-update:hover {
+        background: #e6b800;
+        transform: translateY(-1px);
+    }
+
+.avatar-upload-section {
+    border: 2px dashed var(--kfc-light-red);
+    border-radius: 10px;
+    padding: 1rem;
+    background: var(--light-gray);
+    text-align: center;
+}
+
+.avatar-preview {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 2px solid var(--kfc-red);
+    border-radius: 50%;
+    margin-bottom: 1rem;
+}
+
+.file-input-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+    .file-input-wrapper input[type=file] {
+        position: absolute;
+        left: -9999px;
+    }
+
+.file-input-label {
+    background: var(--kfc-red);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+    .file-input-label:hover {
+        background: var(--kfc-dark-red);
+    }
+
+.selected-file {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--muted-text);
+}
+
+.row {
+    margin: 0;
+}
+
+.col-md-4, .col-md-8 {
+    padding: 0;
+}
+
+@media (max-width: 768px) {
+    .profile-container {
+        padding: 0.5rem;
+        min-height: auto;
+    }
+
+    .profile-card {
+        margin-bottom: 1rem;
+        border-radius: 10px;
+    }
+
+    .profile-header {
+        padding: 1rem;
+    }
+
+    .profile-avatar {
+        width: 80px;
+        height: 80px;
+        border-width: 3px;
+    }
+
+    .profile-name {
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .profile-position {
+        font-size: 0.9rem;
+        padding: 0.3rem 1rem;
+        margin-top: 0.5rem;
+    }
+
+    .info-section {
+        padding: 1rem;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+
+    .info-table th,
+    .info-table td {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .info-table th {
+        width: 40%;
+    }
+
+    .schedule-table {
+        font-size: 0.8rem;
+    }
+
+        .schedule-table thead th,
+        .schedule-table tbody td {
+            padding: 0.5rem 0.3rem;
+        }
+
+    .avatar-upload-section {
+        padding: 0.5rem;
+    }
+
+    .avatar-preview {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 0.5rem;
+    }
+
+    .file-input-label {
+        padding: 0.3rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
+    .btn-kfc-update {
+        padding: 0.3rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+
+    .btn-kfc-primary,
+    .btn-kfc-secondary {
+        width: 100%;
+        justify-content: center;
+        padding: 0.6rem 1.5rem;
+        font-size: 0.9rem;
+    }
+
+    .selected-file {
+        font-size: 0.8rem;
+    }
+    /* Tối ưu hóa cho màn hình 768px */
+    .row {
+        margin: 0 -5px;
+    }
+
+    .col-md-6 {
+        padding: 0 5px;
+    }
+
+    .container {
+        padding: 0 10px;
+    }
+}

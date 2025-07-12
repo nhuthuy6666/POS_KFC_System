@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6b13b916b480452aa27e00722834be9d" Name="Diagram1">
+        <EntityTypeShape EntityType="KFC_ManageModel.ActivityLog" Width="1.5" PointX="8.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="KFC_ManageModel.Customer" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="KFC_ManageModel.CustomerAccount" Width="1.5" PointX="3" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="KFC_ManageModel.DeliveryOrder" Width="1.5" PointX="6" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="KFC_ManageModel.Employee" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="KFC_ManageModel.EmployeeAccount" Width="1.5" PointX="6" PointY="15.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="KFC_ManageModel.Ingredient" Width="1.5" PointX="0.75" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="KFC_ManageModel.Invoice" Width="1.5" PointX="8.25" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="KFC_ManageModel.Order" Width="1.5" PointX="6" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="KFC_ManageModel.OrdersProduct" Width="1.5" PointX="11.25" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="KFC_ManageModel.Position" Width="1.5" PointX="1.5" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="KFC_ManageModel.Product" Width="1.5" PointX="9" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="KFC_ManageModel.ProductType" Width="1.5" PointX="6.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="KFC_ManageModel.Promotion" Width="1.5" PointX="6" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="KFC_ManageModel.Receipt" Width="1.5" PointX="10.5" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="KFC_ManageModel.Setting" Width="1.5" PointX="10.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="KFC_ManageModel.StoreOrder" Width="1.5" PointX="0.75" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="KFC_ManageModel.StoreOrderDetail" Width="1.5" PointX="3" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="KFC_ManageModel.Supplier" Width="1.5" PointX="3" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="KFC_ManageModel.Transaction" Width="1.5" PointX="3" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="KFC_ManageModel.WorkLog" Width="1.5" PointX="6" PointY="18.375" IsExpanded="true" />
+        <AssociationConnector Association="KFC_ManageModel.FK_CUSTOMER_HASCUSTOM_CUSTOMER" ManuallyRouted="false" />
+        <AssociationConnector Association="KFC_ManageModel.FK_ORDERS_PLACESORD_CUSTOMER" ManuallyRouted="false" />
+        <AssociationConnector Association="KFC_ManageModel.FK_INVOICE_HASDELIVE_DELIVERY" ManuallyRouted="false" />
+        <AssociationConnector Association="KFC_ManageModel.FK_EMPLOYEE_HASEMPLOY_EMPLOYEE" ManuallyRouted="false" />
+        <AssociationConnector Association="KFC_ManageModel.FK_EMPLOYEE_HASPOSITI_POSITION" ManuallyRouted="false" />
+        <AssociationConnector Association="KFC_ManageModel.FK_ORDERS_PROCESSES_EMPLOYEE" ManuallyRouted="false" />
+        <AssociationConnector Association="KFC_ManageModel.FK_WORKLOG_LOGSWORK_EMPLOYEE" ManuallyRouted="false" />
+        <AssociationConnector Association="KFC_ManageModel.FK_STOREORD_CONTAINSI_INGREDIE" ManuallyRouted="false" />
+        <AssociationConnector Association="KFC_ManageModel.FK_INVOICE_APPLIESPR_PROMOTIO" ManuallyRouted="false" />
+        <AssociationConnector Association="KFC_ManageModel.FK_INVOICE_GENERATES_ORDERS" ManuallyRouted="false" />
+        <AssociationConnector Association="KFC_ManageModel.FK_RECEIPT_GENERATES_INVOICE" ManuallyRouted="false" />
+        <AssociationConnector Association="KFC_ManageModel.FK_ORDERSPR_CONTAINSP_ORDERS" ManuallyRouted="false" />
+        <AssociationConnector Association="KFC_ManageModel.FK_ORDERSPR_CONTAINSP_PRODUCT" ManuallyRouted="false" />
+        <AssociationConnector Association="KFC_ManageModel.FK_PRODUCT_BELONGSTO_PRODUCTT" ManuallyRouted="false" />
+        <AssociationConnector Association="KFC_ManageModel.FK_PRODUCT_HASPROMOT_PROMOTIO" ManuallyRouted="false" />
+        <AssociationConnector Association="KFC_ManageModel.FK_STOREORD_CONTAINSI_STOREORD" ManuallyRouted="false" />
+        <AssociationConnector Association="KFC_ManageModel.FK_TRANSACT_GENERATES_STOREORD" ManuallyRouted="false" />
+        <AssociationConnector Association="KFC_ManageModel.IngredientSupplier" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

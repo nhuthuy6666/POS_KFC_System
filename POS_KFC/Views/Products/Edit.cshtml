@@ -1,0 +1,149 @@
+﻿@model POS_KFC.Models.Product
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<link href="~/Content/css/EditProducts.css" rel="stylesheet" type="text/css" />
+
+<div class="kfc-container">
+    <!-- HEADER -->
+    <div class="kfc-header text-center">
+        <h3 class="display-5 fw-bold mb-0">
+            <i class="bi bi-pencil-square me-3"></i> Chỉnh sửa
+        </h3>
+    </div>
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb-nav">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a href="@Url.Action("Index")">
+                        <i class="bi bi-house-door me-1"></i>Danh sách món ăn
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <i class="bi bi-info-circle me-1"></i>Chỉnh sửa
+                </li>
+            </ol>
+        </nav>
+    </div>
+    @using (Html.BeginForm("Edit", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+        @Html.HiddenFor(model => model.ProductId)
+
+        <div class="kfc-main-wrapper">
+            <!-- Form Section -->
+            <div class="kfc-form-section">
+                <h3 class="kfc-section-title">
+                    <i class="bi bi-info-circle"></i>
+                    Thông Tin Món Ăn
+                </h3>
+
+                <div class="kfc-form-grid">
+                    <div class="kfc-form-group">
+                        <label class="kfc-form-label">Loại món ăn</label>
+                        @Html.DropDownList("ProductTypeId", null, new { @class = "form-select kfc-form-control rounded-pill" })
+                        @Html.ValidationMessageFor(model => model.ProductTypeId, "", new { @class = "kfc-validation-text" })
+                    </div>
+
+                    <div class="kfc-form-group">
+                        <label class="kfc-form-label">Khuyến mãi</label>
+                        @Html.DropDownList("PromotionId", (IEnumerable<SelectListItem>)ViewBag.Promotions, "-- Không có khuyến mãi --", new { @class = "form-select kfc-form-control rounded-pill" })
+                        @Html.ValidationMessageFor(model => model.PromotionId, "", new { @class = "kfc-validation-text" })
+                    </div>
+                </div>
+
+                <div class="kfc-form-grid">
+                    <div class="kfc-form-group">
+                        <label class="kfc-form-label">Tên món</label>
+                        @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control kfc-form-control rounded-pill" } })
+                        @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "kfc-validation-text" })
+                    </div>
+
+                    <div class="kfc-form-group kfc-price-input">
+                        <label class="kfc-form-label">Giá tiền</label>
+                        @Html.EditorFor(model => model.Price, new
+                        {
+                            htmlAttributes = new
+                            {
+                                @class = "form-control kfc-form-control rounded-pill",
+                                type = "number",
+                                step = "1000",
+                                min = "0",
+                                style = "padding-right: 2.5rem;"
+                            }
+                        })
+                        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "kfc-validation-text" })
+                    </div>
+                </div>
+
+                <div class="kfc-form-grid full-width">
+                    <div class="kfc-form-group">
+                        <label class="kfc-form-label">Mô tả món ăn</label>
+                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control kfc-form-control kfc-textarea rounded-3", placeholder = "Nhập mô tả chi tiết về món ăn..." })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "kfc-validation-text" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Section -->
+            <div class="kfc-image-section">
+                <h3 class="kfc-section-title">
+                    <i class="bi bi-image"></i>
+                    Hình Ảnh Món Ăn
+                </h3>
+
+                <div class="kfc-image-display">
+                    @if (!string.IsNullOrEmpty(Model.ProductImage))
+                    {
+                        <img src="@Url.Content("~/Content/images/products/" + @Model.ProductImage)"
+                             class="kfc-current-image"
+                             alt="Ảnh sản phẩm hiện tại" />
+                        <p class="mt-2 text-muted small">Ảnh hiện tại</p>
+                    }
+                    else
+                    {
+                        <div class="kfc-no-image">
+                            <i class="bi bi-image" style="font-size: 3rem;"></i>
+                            <span>Chưa có ảnh sản phẩm</span>
+                        </div>
+                    }
+                </div>
+
+                <div class="kfc-file-upload">
+                    <input type="file" name="ProductImageFile" id="ProductImageFile"
+                           class="kfc-file-input" accept="image/*" onchange="previewImage(event)" />
+                    <label for="ProductImageFile" class="kfc-file-label">
+                        <i class="bi bi-cloud-upload me-2"></i>
+                        Chọn ảnh mới
+                    </label>
+                    @Html.ValidationMessageFor(model => model.ProductImage, "", new { @class = "kfc-validation-text" })
+                </div>
+
+                <div class="kfc-preview-container">
+                    <img id="preview" src="#" alt="Xem trước ảnh" class="kfc-image-preview" />
+                </div>
+            </div>
+        </div>
+
+        <div class="kfc-action-bar">
+            <a href="@Url.Action("Index")" class="kfc-btn-back">
+                <i class="bi bi-arrow-left"></i>
+                Quay lại
+            </a>
+            <button type="submit" class="kfc-btn-save">
+                <i class="bi bi-check-circle"></i>
+                Lưu thay đổi
+            </button>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/ScriptPage/EditProducts.js"></script>
+}

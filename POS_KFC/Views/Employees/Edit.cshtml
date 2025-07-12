@@ -1,0 +1,116 @@
+﻿@model POS_KFC.Models.Employee
+
+@{
+    ViewBag.Title = "Edit Employee";
+}
+
+<link href="~/Content/css/EditEmployees.css" rel="stylesheet" type="text/css" />
+
+<div class="edit-container">
+    <div class="floating-elements">
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+    </div>
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb-nav">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a href="@Url.Action("Index")">
+                        <i class="bi bi-house-door me-1"></i>Danh sách nhân viên
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <i class="bi bi-info-circle me-1"></i>Chỉnh sửa
+                </li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="edit-header">
+        <h1>Chỉnh Sửa Nhân Viên</h1>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.EmployeeId)
+
+        <div class="forms-container">
+            <!-- Personal Information Section -->
+            <div class="form-section">
+                <h3 class="section-title personal">Thông Tin Cá Nhân</h3>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PositionId, "Vị Trí Công Việc", htmlAttributes: new { @class = "form-label" })
+                    <div class="dropdown-wrapper">
+                        @Html.DropDownList("PositionId", null, "Chọn vị trí công việc...", htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.PositionId, "", new { @class = "validation-message" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FirstName, "Họ nhân viên", htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập tên của bạn..." } })
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "validation-message" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.LastName, "Tên nhân viên", htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập họ và tên đệm..." } })
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "validation-message" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Birthday, "Ngày Sinh", htmlAttributes: new { @class = "form-label" })
+                    @Html.TextBoxFor(model => model.Birthday, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                    @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "validation-message" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Gender, "Giới Tính", htmlAttributes: new { @class = "form-label" })
+                    <div class="gender-group">
+                        <label class="gender-option">
+                            @Html.RadioButtonFor(model => model.Gender, true) Nam
+                        </label>
+                        <label class="gender-option">
+                            @Html.RadioButtonFor(model => model.Gender, false) Nữ
+                        </label>
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "validation-message" })
+                </div>
+            </div>
+
+            <!-- Contact Information Section -->
+            <div class="form-section">
+                <h3 class="section-title contact">Thông Tin Liên Hệ</h3>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Phone, "Số Điện Thoại", htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập số điện thoại...", type = "tel" } })
+                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "validation-message" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, "Địa Chỉ Email", htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "example@kfc.com.vn", type = "email" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "validation-message" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Address, "Địa Chỉ Thường Trú", htmlAttributes: new { @class = "form-label" })
+                    @Html.TextAreaFor(model => model.Address, new { @class = "form-control", placeholder = "Nhập địa chỉ đầy đủ...", rows = "4", style = "resize: vertical; min-height: 120px;" })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "validation-message" })
+                </div>
+            </div>
+
+            <div class="form-actions">
+                @Html.ActionLink("← Quay Lại Danh Sách", "Index", null, new { @class = "btn btn-secondary" })
+                <input type="submit" value="Lưu Thay Đổi" class="btn btn-primary" />
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,168 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Hệ Thống Quản Lý KFC</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/Content/css/Layout.css" rel="stylesheet" type="text/css" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @using POS_KFC.App_Code
+
+</head>
+<body>
+    <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+
+    <div class="main-wrapper">
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header ">
+                <a href="@Url.Action("Create", "Orders")">
+                    <img src="~/Content/images/logo/kfc-logo.png" alt="KFC Logo" class="sidebar-logo" />
+                </a>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="@Html.IsActive("Orders", "Create")">
+                    <a href="@Url.Action("Create", "Orders")">
+                        <span class="icon bi bi-calculator-fill"></span>
+                        <span>POS</span>
+                    </a>
+                </li>
+                <li class="@Html.IsActive("Orders", "Index")">
+                    <a href="@Url.Action("Index", "Orders")">
+                        <span class="icon bi bi-card-checklist"></span>
+                        <span>Quản Lý Đơn Hàng</span>
+                    </a>
+                </li>
+                <li class="@Html.IsActive("Products", "Index")">
+                    <a href="@Url.Action("Index", "Products")">
+                        <span class="icon bi bi-list-ul"></span>
+                        <span>Quản Lý Menu</span>
+                    </a>
+                </li>
+                <li class="@Html.IsActive("Promotions", "Index")">
+                    <a href="@Url.Action("Index", "Promotions")">
+                        <span class="icon bi bi-currency-dollar"></span>
+                        <span>Khuyến mãi</span>
+                    </a>
+                </li>
+                <li class="@Html.IsActive("Ingredients", "Index")">
+                    <a href="@Url.Action("Index", "Ingredients")">
+                        <span class="icon bi bi-box-seam"></span>
+                        <span>Quản Lý Kho</span>
+                    </a>
+                </li>
+                <li class="@Html.IsActive("Employees", "Index")">
+                    <a href="@Url.Action("Index", "Employees")">
+                        <span class="icon bi bi-people-fill"></span>
+                        <span>Quản Lý Nhân Viên</span>
+                    </a>
+                </li>
+                <li class="@Html.IsActive("Statistics", "Index")">
+                    <a href="@Url.Action("Index", "Statistics")">
+                        <span class="icon bi bi-graph-up"></span>
+                        <span>Báo Cáo</span>
+                    </a>
+                </li>
+                @{
+                    bool isLoggedIn = Session["Username"] != null;
+                    string controller = "EmployeeAccounts";
+                    string action = isLoggedIn ? "Index" : "Login";
+                }
+
+                <li class="@Html.IsActive(controller, action)">
+                    <a href="@Url.Action(action, controller)">
+                        <span class="icon bi bi-person-circle"></span>
+                        <span>Tài khoản</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="main-content">
+            <div class="content-wrapper">
+                <div class="container body-content">
+                    @RenderBody()
+                </div>
+            </div>
+
+            <footer class="footer-kfc">
+                <div class="container-footer">
+                    <div class="footer-content">
+                        <div class="footer-section">
+                            <h4>KFC Vietnam</h4>
+                            <p>Hệ thống quản lý nhà hàng thức ăn nhanh KFC hàng đầu tại Việt Nam. Chúng tôi cam kết mang đến trải nghiệm quản lý hiệu quả và chuyên nghiệp.</p>
+                            <div class="footer-contact-info">
+                                <span class="icon">📍</span>
+                                <span>Tầng 5, Tòa nhà Vincom Center, 72 Lê Thánh Tôn, Nha Trang</span>
+                            </div>
+                        </div>
+
+                        <div class="footer-section">
+                            <h4>Liên Hệ</h4>
+                            <div class="footer-contact-info">
+                                <span class="icon">📞</span>
+                                <span>Hotline: 1900 1009</span>
+                            </div>
+                            <div class="footer-contact-info">
+                                <span class="icon">✉️</span>
+                                <span>Email: support@kfc.com.vn</span>
+                            </div>
+                            <div class="footer-contact-info">
+                                <span class="icon">🌐</span>
+                                <span>Website: www.kfc.com.vn</span>
+                            </div>
+                            <div class="footer-contact-info">
+                                <span class="icon">⏰</span>
+                                <span>Hỗ trợ: 24/7</span>
+                            </div>
+                        </div>
+
+                        <div class="footer-section">
+                            <h4>Chức Năng Hệ Thống</h4>
+                            <ul>
+                                <li><a href="#">Quản lý nhân viên</a></li>
+                                <li><a href="#">Quản lý đơn hàng</a></li>
+                                <li><a href="#">Quản lý kho hàng</a></li>
+                                <li><a href="#">Báo cáo doanh thu</a></li>
+                                <li><a href="#">Phân tích kinh doanh</a></li>
+                                <li><a href="#">Quản lý menu</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="footer-section">
+                            <h4>Hỗ Trợ & Chính Sách</h4>
+                            <ul>
+                                <li><a href="#">Hướng dẫn sử dụng</a></li>
+                                <li><a href="#">Câu hỏi thường gặp</a></li>
+                                <li><a href="#">Chính sách bảo mật</a></li>
+                                <li><a href="#">Điều khoản sử dụng</a></li>
+                                <li><a href="#">Chính sách bảo hành</a></li>
+                                <li><a href="#">Báo cáo lỗi</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="footer-bottom">
+                        <div class="footer-bottom-content">
+                            <p>&copy; @DateTime.Now.Year KFC Vietnam Management System. Tất cả quyền được bảo lưu.</p>
+                            <p>Phiên bản 2.1.0 | Cập nhật lần cuối: @DateTime.Now.ToString("dd/MM/yyyy")</p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/ScriptPage/Layout.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,194 @@
+﻿@model IEnumerable<POS_KFC.Models.Promotion>
+@{
+    ViewBag.Title = "Danh sách khuyến mãi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/css/Promotions.css" rel="stylesheet" type="text/css" />
+
+<div class="container">
+    <div class="page-header">
+        <div class="container">
+            <h1 class="text-center"><i class="bi bi-cash-coin"></i> Khuyến mãi KFC</h1>
+        </div>
+    </div>
+    <div class="row">
+        <!-- VÙNG DANH SÁCH -->
+        <div class="col-lg-7 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="section-title">
+                        Danh sách
+                        <span class="stats-badge">@Model.Where(x => x.PromotionId != 11).Count() khuyến mãi</span>
+                    </h3>
+                </div>
+                <div class="card-body p-0">
+                    @if (Model.Where(x => x.PromotionId != 11).Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table promotion-table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Tên khuyến mãi</th>
+                                        <th>Giá khuyến mãi</th>
+                                        <th class="text-center">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="promotionTable">
+                                    @foreach (var item in Model.Where(x => x.PromotionId != 11))
+                                    {
+                                        <tr class="promotion-row" data-id="@item.PromotionId" data-name="@item.PromotionName">
+                                            <td class="promotion-name">@item.PromotionName</td>
+                                            <td class="promotion-price">@String.Format("{0:0.##}%", item.PromotionPrice)</td>
+                                            <td class="text-center">
+                                                <button class="btn btn-delete btn-sm"
+                                                        data-toggle="modal"
+                                                        data-target="#confirmDeleteModal"
+                                                        data-id="@item.PromotionId"
+                                                        data-name="@item.PromotionName"
+                                                        title="Xóa khuyến mãi">
+                                                    Xóa
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Pagination Summary -->
+                        <div class="d-flex justify-content-between align-items-center p-3 border-top">
+                            <div>
+                                <span id="paginationInfo">Hiển thị 0 đến 0 trên tổng số 0</span>
+                            </div>
+                            <div id="pagination" class="pagination mb-0"></div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="empty-state">
+                            <svg fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5 4a3 3 0 00-3 3v6a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3H5zm-1 9v-1h5v2H5a1 1 0 01-1-1zm7 1h4a1 1 0 001-1v-1h-5v2zm0-4h5V8h-5v2zM9 8H4v2h5V8z" clip-rule="evenodd"></path>
+                            </svg>
+                            <h4>Chưa có khuyến mãi nào</h4>
+                            <p>Hãy thêm khuyến mãi đầu tiên của bạn!</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- VÙNG THÊM MỚI -->
+        <div class="col-lg-5">
+            <div class="card fade-in">
+                <div class="card-header">
+                    <h3 class="section-title">Thêm khuyến mãi mới</h3>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("Create", "Promotions", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-group">
+                            @Html.Label("Tên khuyến mãi", new { @class = "form-label" })
+                            @Html.TextBox("PromotionName", null, new
+                            {
+                                @class = "form-control",
+                                required = "required",
+                                placeholder = "Ví dụ: Giảm giá cuối tuần"
+                            })
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Giá khuyến mãi (%)", new { @class = "form-label" })
+                            <input type="number"
+                                   step="1"
+                                   min="1"
+                                   max="100"
+                                   name="PromotionPrice"
+                                   class="form-control"
+                                   required
+                                   placeholder="Nhập % giảm giá (1-100)" />
+                        </div>
+                        <button type="submit" class="btn btn-add">
+                            <i class="bi bi-plus-circle"></i> Thêm khuyến mãi mới
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal xác nhận xoá -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel"><i class="bi bi-exclamation-diamond"></i> Xác nhận xoá</h5>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc chắn muốn xoá khuyến mãi <strong id="promoName"></strong>?
+                    <br><small class="text-muted">Hành động này không thể hoàn tác.</small>
+                </div>
+                <div class="modal-footer">
+                    @using (Html.BeginForm("Delete", "Promotions", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" id="deletePromoId" />
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ</button>
+                        <button type="submit" class="btn btn-danger">Xoá</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal chọn sản phẩm để áp dụng khuyến mãi -->
+<div class="modal fade" id="applyPromotionModal" tabindex="-1" role="dialog" aria-labelledby="applyPromoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><span id="promoTitle"></span></h5>
+            </div>
+            <form id="applyPromotionForm">
+                <div class="modal-body">
+                    <div id="productListContainer">
+                        <p>Đang tải sản phẩm...</p>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex flex-wrap justify-content-between">
+                    <div>
+                        <button type="button" class="btn btn-outline-primary" id="btnApplyAll">
+                            Áp dụng cho tất cả sản phẩm
+                        </button>
+                        <button type="button" class="btn btn-outline-danger" id="btnRemovePromotion">
+                            Huỷ áp dụng khuyến mãi
+                        </button>
+                    </div>
+                    <div>
+                        <input type="hidden" name="promotionId" id="selectedPromotionId" />
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ</button>
+                        <button type="submit" class="btn btn-success">Áp dụng</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="warningToast" class="toast align-items-center text-white border-0 fade" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                Thông báo
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/Scripts/ScriptPage/Promotions.js"></script>
+}

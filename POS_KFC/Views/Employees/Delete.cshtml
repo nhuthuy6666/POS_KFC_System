@@ -1,0 +1,106 @@
+﻿@model POS_KFC.Models.Employee
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<link href="~/Content/css/DeleteEmployees.css" rel="stylesheet" type="text/css" />
+
+<div class="delete-container">
+    <div class="floating-elements">
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+    </div>
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb-nav">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a href="@Url.Action("Index")">
+                        <i class="bi bi-house-door me-1"></i>Danh sách nhân viên
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <i class="bi bi-trash me-1"></i>Xóa 
+                </li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="delete-header">
+        <h1>Xóa Nhân Viên</h1>
+        <div class="subtitle">Bạn có chắc chắn muốn xóa nhân viên này không?</div>
+    </div>
+
+    <div class="delete-content">
+        <div class="warning-banner">
+            Hành động này không thể hoàn tác. Tất cả dữ liệu liên quan sẽ bị xóa vĩnh viễn.
+        </div>
+
+        <div class="employee-details">
+            <h4 class="employee-title">Thông Tin Nhân Viên</h4>
+
+            <dl class="dl-horizontal">
+                <dt>
+                    Họ nhân viên
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.FirstName)
+                </dd>
+                <dt>
+                    Tên nhân viên
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.LastName)
+                </dd>
+                <dt>
+                    Bgày sinh
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Birthday)
+                </dd>
+                <dt>
+                    Giới tính
+                </dt>
+                <dd>
+                    @(Model.Gender ? "Nam" : "Nữ")
+                </dd>
+                <dt>
+                    Số điện thoại
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Phone)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
+                <dt>
+                    Địa chỉ
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Address)
+                </dd>
+                <dt>
+                    Vị trí
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Position.PositionName)
+                </dd>
+            </dl>
+        </div>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-actions no-color">
+                @Html.ActionLink("← Quay Lại Danh Sách", "Index", null, new { @class = "btn btn-secondary" })
+                <input type="submit" value="Xác Nhận Xóa" class="btn btn-default" />
+            </div>
+        }
+    </div>
+</div>

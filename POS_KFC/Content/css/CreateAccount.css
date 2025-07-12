@@ -1,0 +1,359 @@
+﻿:root {
+    --kfc-red: #E4002B;
+    --kfc-dark-red: #C5001F;
+    --kfc-light-red: #FFE8ED;
+    --kfc-gold: #FFC72C;
+    --success-green: #28A745;
+    --light-gray: #F8F9FA;
+    --dark-text: #2C3E50;
+    --muted-text: #6C757D;
+    --border-color: #E5E7EB;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --gradient-kfc: linear-gradient(135deg, var(--kfc-red) 0%, var(--kfc-dark-red) 100%);
+    --gradient-gold: linear-gradient(135deg, var(--kfc-gold) 0%, #FFD700 100%);
+}
+
+/* Container chính */
+body {
+    background: linear-gradient(135deg, var(--light-gray) 0%, #E8F4FD 100%);
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
+}
+
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 20% 20%, rgba(228, 0, 43, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(255, 199, 44, 0.1) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: -1;
+    }
+
+.container {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Tiêu đề chính */
+h2 {
+    background: var(--gradient-kfc);
+    color: white;
+    padding: 30px;
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+    h2::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    }
+
+/* Form container */
+.form-horizontal {
+    background: white;
+    padding: 50px;
+    border-radius: 25px;
+    box-shadow: var(--shadow-lg);
+    border: 3px solid var(--kfc-light-red);
+    position: relative;
+    overflow: hidden;
+}
+
+    .form-horizontal::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: var(--gradient-kfc);
+    }
+
+/* Tiêu đề form */
+h4 {
+    color: var(--kfc-red);
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-align: center;
+    position: relative;
+    padding-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+    h4::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 120px;
+        height: 4px;
+        background: var(--gradient-gold);
+        border-radius: 2px;
+    }
+
+/* Đường kẻ ngang */
+hr {
+    border: none;
+    height: 3px;
+    background: var(--gradient-gold);
+    margin: 30px 0 40px 0;
+    border-radius: 2px;
+    box-shadow: var(--shadow-sm);
+}
+
+/* Form groups */
+.form-group {
+    margin-bottom: 35px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+    .form-group:hover {
+        transform: translateY(-2px);
+    }
+
+/* Labels */
+.control-label {
+    color: var(--dark-text);
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    display: block;
+    position: relative;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-left: 20px;
+}
+
+    .control-label::before {
+        content: '▸';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--kfc-red);
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+/* Input fields */
+.form-control {
+    width: 100%;
+    padding: 18px 25px;
+    border: 2px solid var(--border-color);
+    border-radius: 15px;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, white 0%, var(--light-gray) 100%);
+    color: var(--dark-text);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--kfc-red);
+        box-shadow: 0 0 0 4px rgba(228, 0, 43, 0.15), inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        transform: translateY(-2px);
+        background: white;
+    }
+
+    .form-control:hover {
+        border-color: var(--kfc-gold);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+/* File input */
+input[type="file"] {
+    width: 100%;
+    padding: 20px 25px;
+    border: 3px dashed var(--kfc-gold);
+    border-radius: 15px;
+    background: linear-gradient(135deg, var(--light-gray) 0%, white 100%);
+    color: var(--dark-text);
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    text-align: center;
+}
+
+    input[type="file"]:hover {
+        border-color: var(--kfc-red);
+        background: linear-gradient(135deg, var(--kfc-light-red) 0%, white 100%);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+
+    input[type="file"]:focus {
+        outline: none;
+        border-color: var(--kfc-red);
+        box-shadow: 0 0 0 4px rgba(228, 0, 43, 0.15);
+    }
+
+/* Image preview */
+#avatarPreview {
+    border: 3px solid var(--kfc-gold);
+    transition: all 0.3s ease;
+}
+
+    #avatarPreview:hover {
+        transform: scale(1.05);
+        box-shadow: var(--shadow-lg);
+    }
+
+/* Submit button */
+input[type="submit"] {
+    background: var(--gradient-kfc);
+    color: white;
+    border: none;
+    padding: 18px 50px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    min-width: 200px;
+}
+
+    input[type="submit"]:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-lg);
+        background: linear-gradient(135deg, var(--kfc-dark-red) 0%, var(--kfc-red) 100%);
+    }
+
+    input[type="submit"]:active {
+        transform: translateY(-1px);
+    }
+
+    input[type="submit"]::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+
+    input[type="submit"]:hover::before {
+        width: 400px;
+        height: 400px;
+    }
+
+/* Back button */
+.btn-secondary {
+    background: var(--gradient-gold);
+    color: var(--dark-text);
+    border: none;
+    padding: 15px 35px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-md);
+    margin-top: 25px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+    .btn-secondary:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-lg);
+        text-decoration: none;
+        color: var(--dark-text);
+        background: linear-gradient(135deg, #FFD700 0%, var(--kfc-gold) 100%);
+    }
+
+/* Validation messages */
+.text-danger {
+    color: var(--kfc-red);
+    font-size: 0.95rem;
+    margin-top: 8px;
+    display: block;
+    font-weight: 600;
+    padding: 8px 15px;
+    background: rgba(228, 0, 43, 0.1);
+    border-radius: 8px;
+    border-left: 4px solid var(--kfc-red);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .col-md-2, .col-md-10, .col-md-offset-2 {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    h2 {
+        font-size: 2rem;
+        padding: 20px;
+    }
+
+    .form-horizontal {
+        padding: 30px 20px;
+    }
+
+    .container {
+        padding: 10px;
+    }
+}
+
+/* Hover effects cho form groups */
+.form-group:hover .control-label::before {
+    color: var(--kfc-gold);
+    transform: translateY(-50%) scale(1.2);
+}
+
+/* Floating effect cho các input khi focus */
+.form-control:focus + .floating-label,
+.form-control:not(:placeholder-shown) + .floating-label {
+    transform: translateY(-25px) scale(0.8);
+    color: var(--kfc-red);
+    background: white;
+    padding: 0 8px;
+}
+
+/* Card effect cho form */
+.form-horizontal::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 1px solid rgba(228, 0, 43, 0.1);
+    border-radius: 20px;
+    pointer-events: none;
+}

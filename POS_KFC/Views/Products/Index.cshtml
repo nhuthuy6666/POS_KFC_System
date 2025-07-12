@@ -1,0 +1,166 @@
+﻿@model IEnumerable<POS_KFC.Models.Product>
+@{
+    ViewBag.Title = "Quản lý thực đơn KFC";
+}
+
+<link href="~/Content/css/Products.css" rel="stylesheet" type="text/css" />
+
+<div class="kfc-container">
+    <div class="container">
+        <!-- HEADER -->
+        <div class="kfc-header text-center">
+            <h3 class="display-5 fw-bold mb-0">
+                <i class="bi bi-shop me-3"></i>Thực Đơn KFC
+            </h3>
+        </div>
+
+        <!-- NÚT THÊM MỚI -->
+        <div class="text-center mb-4">
+            <a href="@Url.Action("Create")" class="btn btn-kfc-primary btn-lg">
+                <i class="bi bi-plus-circle me-2"></i>Thêm Món Mới
+            </a>
+        </div>
+
+        <!-- FORM TÌM KIẾM -->
+        @using (Html.BeginForm("Index", "Products", FormMethod.Get))
+        {
+            <div class="search-form">
+                <h5 class="text-center mb-4 fw-bold text-secondary">
+                    <i class="bi bi-search me-2"></i>Tìm Kiếm Món Ăn
+                </h5>
+                <div class="row g-4 align-items-end">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold text-secondary">
+                            <i class="bi bi-textarea-t me-1"></i>Tìm theo tên
+                        </label>
+                        <input type="text" name="searchString" class="form-control"
+                               value="@Request.QueryString["searchString"]" placeholder="Nhập tên món ăn..." />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold text-secondary">
+                            <i class="bi bi-tags me-1"></i>Lọc theo loại
+                        </label>
+                        @Html.DropDownList("productTypeId", (SelectList)ViewBag.ProductTypes, "-- Tất cả loại --", new { @class = "form-select" })
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold text-secondary">
+                            <i class="bi bi-gift me-1"></i>Lọc theo khuyến mãi
+                        </label>
+                        @Html.DropDownList("promotionId", (SelectList)ViewBag.Promotions, "-- Tất cả khuyến mãi --", new { @class = "form-select" })
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-kfc-outline w-100">
+                            <i class="bi bi-search me-2"></i>Tìm Kiếm
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- CARD HIỂN THỊ SẢN PHẨM -->
+        @if (Model.Any())
+        {
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="productList">
+                @foreach (var item in Model)
+                {
+                    <div class="col">
+                        <div class="card h-100 kfc-soft-card position-relative">
+
+                            @* Badge khuyến mãi *@
+                            @if (item.Promotion != null)
+                            {
+                                <div class="position-absolute top-0 start-0 promotion-badge" style="z-index: 10;">
+                                    <i class="bi bi-gift me-1"></i>@item.Promotion.PromotionName
+                                </div>
+                            }
+
+                            @* Hình ảnh *@
+                            @if (!string.IsNullOrEmpty(item.ProductImage))
+                            {
+                                <div class="product-image-wrapper">
+                                    <img src="@Url.Content("~/Content/images/products/" + @item.ProductImage)"
+                                         class="card-img-top product-image"
+                                         alt="@item.ProductName"
+                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                                </div>
+                                <div class="no-image-placeholder" style="display: none;">
+                                    <div class="text-center">
+                                        <i class="bi bi-image-fill display-4 mb-2"></i>
+                                        <div>Không có hình ảnh</div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="no-image-placeholder">
+                                    <div class="text-center">
+                                        <i class="bi bi-image-fill display-4 mb-2"></i>
+                                        <div>Chưa có hình ảnh</div>
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title fw-bold mb-3">@item.ProductName</h5>
+
+                                <div class="mb-3">
+                                    <div class="price-tag">
+                                        <i class="bi bi-currency-dollar me-1"></i>
+                                        @String.Format("{0:N0}₫", item.Price)
+                                    </div>
+                                </div>
+
+                                <div class="mt-auto">
+                                    <div class="row g-2 text-muted small">
+                                        <div class="col-12">
+                                            <i class="bi bi-bookmark-fill text-info me-1"></i>
+                                            <span class="fw-semibold">Loại:</span>
+                                            @(item.ProductType?.ProductTypeName ?? "Không xác định")
+                                        </div>
+                                        <div class="col-12">
+                                            <i class="bi bi-gift-fill text-success me-1"></i>
+                                            <span class="fw-semibold">Khuyến mãi:</span>
+                                            @(item.Promotion?.PromotionName ?? "Không có")
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-footer kfc-soft-footer">
+                                <div class="action-buttons d-flex justify-content-center">
+                                    @Html.ActionLink("Chi tiết", "Details", new { id = item.ProductId },
+                                        new { @class = "btn btn-info btn-sm", title = "Xem chi tiết" })
+                                    @Html.ActionLink("Sửa", "Edit", new { id = item.ProductId },
+                                        new { @class = "btn btn-warning btn-sm", title = "Chỉnh sửa" })
+                                    @Html.ActionLink("Xóa", "Delete", new { id = item.ProductId },
+                                        new { @class = "btn btn-danger btn-sm", title = "Xóa sản phẩm" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Pagination Summary -->
+            <div class="d-flex justify-content-between align-items-center p-3 border-top">
+                <div>
+                    <span id="paginationInfo">Hiển thị 0 đến 0 trên tổng số 0</span>
+                </div>
+                <div id="pagination" class="pagination mb-0"></div>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-custom text-center">
+                <i class="bi bi-search display-4 mb-3"></i>
+                <h4 class="fw-bold mb-2">Không tìm thấy kết quả</h4>
+                <p class="mb-0">Không có sản phẩm nào phù hợp với tiêu chí tìm kiếm của bạn.</p>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/ScriptPage/Products.js"></script>
+}
+

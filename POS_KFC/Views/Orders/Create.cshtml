@@ -1,0 +1,178 @@
+﻿@model POS_KFC.Models.Order
+
+@{
+    ViewBag.Title = "Tạo Đơn Mới";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/css/CreateOrder.css" rel="stylesheet" type="text/css" />
+
+<div class="pos-container">
+    <div class="container-fluid">
+        <!-- Header -->
+        <div class="pos-header">
+            <h2><i class="bi bi-cart-plus me-3"></i>Đơn hàng</h2>
+            <p class="mb-0 opacity-75">Tạo đơn hàng mới - Ngày @DateTime.Now.ToString("dd/MM/yyyy")</p>
+        </div>
+
+        <div class="row g-4" style="min-height: 700px;">
+            <!-- KHUNG TRÁI - Chi tiết đơn hàng -->
+            <div class="col-lg-7">
+                <div class="row g-4 h-100">
+                    <!-- Chi tiết đơn hàng -->
+                    <div class="col-12">
+                        <div class="pos-card h-100 d-flex flex-column" style="min-height: 400px;">
+                            <div class="card-header-custom">
+                                <h5><i class="bi bi-clipboard2-check me-2"></i>Chi Tiết Đơn Hàng</h5>
+                            </div>
+                            <div class="card-body p-3 flex-grow-1 d-flex flex-column">
+                                <div id="orderItems" class="flex-grow-1 scrollable-area" style="overflow-y: auto; max-height: 300px;">
+                                    <div class="empty-state">
+                                        <i class="bi bi-basket3 display-4 text-muted mb-3"></i>
+                                        <p>Chưa có món nào được chọn</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Khuyến mãi -->
+                    <div class="col-12">
+                        <div class="pos-card" style="min-height: 250px;">
+                            <div class="card-header-custom">
+                                <h5><i class="bi bi-gift me-2"></i>Khuyến Mãi Áp Dụng</h5>
+                            </div>
+                            <div class="card-body p-3">
+                                <div id="promotionList" class="scrollable-area" style="max-height: 200px; overflow-y: auto;">
+                                    <div class="empty-state">
+                                        <i class="bi bi-percent display-4 text-muted mb-3"></i>
+                                        <p>Không có khuyến mãi nào được áp dụng</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KHUNG PHẢI - Menu và thanh toán -->
+            <div class="col-lg-5">
+                <div class="row g-4 h-100">
+                    <!-- Menu món ăn -->
+                    <div class="col-12">
+                        <div class="pos-card d-flex flex-column" style="min-height: 550px;">
+                            <div class="card-header-custom">
+                                <h5><i class="bi bi-menu-button-wide me-2"></i>Thực Đơn KFC</h5>
+                            </div>
+                            <div class="card-body p-3 flex-grow-1 d-flex flex-column">
+                                <!-- Tìm kiếm -->
+                                <div class="mb-4">
+                                    <input type="text" id="searchInput" class="search-box w-100"
+                                           placeholder="Tìm kiếm món ăn...">
+                                </div>
+
+                                <!-- Danh sách món ăn -->
+                                <div class="row g-3 flex-grow-1 scrollable-area" id="menuItems"
+                                     style="overflow-y: auto; max-height: 400px;">
+                                    @foreach (var product in ViewBag.Products as List<POS_KFC.Models.Product>)
+                                    {
+                                        var promoName = product.Promotion?.PromotionName ?? "";
+                                        var promoPrice = product.Promotion?.PromotionPrice ?? 0;
+                                        var hasPromo = promoPrice > 0;
+                                        var finalPrice = product.Price - (product.Price * promoPrice);
+
+                                        <div class="col-6">
+                                            <div class="menu-item-card position-relative">
+                                                @if (hasPromo)
+                                                {
+                                                    <div class="promotion-badge position-absolute top-0 end-0 px-2 py-1">
+                                                        <small><i class="bi bi-fire"></i> HOT</small>
+                                                    </div>
+                                                }
+
+                                                <div class="menu-item-image">
+                                                    <img src="@Url.Content("~/Content/images/Products/" + product.ProductImage)" />
+                                                </div>
+
+                                                <div class="card-body p-3">
+                                                    <h6 class="fw-bold mb-2 text-truncate">@product.ProductName</h6>
+
+                                                    <div class="price-info mb-3">
+                                                        @if (hasPromo)
+                                                        {
+                                                            <div class="original-price">@String.Format("{0:N0}₫", product.Price)</div>
+                                                            <div class="price-display">@String.Format("{0:N0}₫", finalPrice)</div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="price-display">@String.Format("{0:N0}₫", product.Price)</div>
+                                                        }
+                                                    </div>
+
+                                                    <button type="button"
+                                                            class="btn btn-add-item w-100 add-to-order"
+                                                            data-id="@product.ProductId"
+                                                            data-name="@product.ProductName"
+                                                            data-price="@product.Price"
+                                                            data-promotion="@promoPrice"
+                                                            data-promotionname="@promoName">
+                                                        <i class="bi bi-plus-circle me-1"></i> Thêm
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thanh toán -->
+                    <div class="col-12">
+                        <div class="pos-card">
+                            <div class="card-body p-4">
+                                <div class="total-display">
+                                    <div class="mb-2">Tổng cộng</div>
+                                    <div id="totalPrice" class="total-amount">0₫</div>
+                                </div>
+
+                                @using (Html.BeginForm("Create", "Orders", FormMethod.Post, new Dictionary<string, object> {
+                                { "onsubmit", "return validateBeforeSubmit()" }}))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.HiddenFor(model => model.OrderDate, new { Value = DateTime.Now.ToString("yyyy-MM-dd") })
+                                    @Html.HiddenFor(model => model.OrderTime, new { Value = DateTime.Now.ToString("HH:mm:ss") })
+                                    @Html.HiddenFor(model => model.TotalPrice)
+                                    @Html.Hidden("SelectedProductsJson", "", new { id = "SelectedProductsJson" })
+
+                                    <button type="submit" class="btn-checkout">
+                                        <i class="bi bi-credit-card me-2"></i>
+                                        Thanh Toán
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast cảnh báo chưa chọn món -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="warningToast" class="toast align-items-center text-white bg-warning border-0 fade" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                Vui lòng chọn món ăn trước khi thanh toán!
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/ScriptPage/CreateOrder.js"></script>
+}

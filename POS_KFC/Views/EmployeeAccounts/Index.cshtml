@@ -1,0 +1,145 @@
+﻿@model POS_KFC.Models.ViewModels.EmployeeProfileViewModel
+
+@{
+    ViewBag.Title = "Trang cá nhân";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/css/EmployeeAccount.css" rel="stylesheet" type="text/css" />
+
+<div class="profile-container">
+    <div class="container">
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="content">
+                    <img id="headerAvatar" src="~/Content/images/avatar/@Model.Account.Avatar?v=@DateTime.Now.Ticks" class="profile-avatar" alt="Avatar" />
+                    <h2 class="profile-name">@Model.Employee.FirstName @Model.Employee.LastName</h2>
+                    <span class="profile-position">@Model.Employee.Position.PositionName</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="info-section">
+                        <h4 class="section-title">Thông tin tài khoản</h4>
+                        <table class="table info-table">
+                            <tr>
+                                <th>Tên đăng nhập</th>
+                                <td>@Model.Account.AccountName</td>
+                            </tr>
+                            <tr>
+                                <th>Ảnh đại diện</th>
+                                <td>
+                                    <div class="avatar-upload-section">
+                                        <img id="avatarPreview" src="~/Content/images/avatar/@Model.Account.Avatar?v=@DateTime.Now.Ticks" alt="Avatar" class="avatar-preview" />
+                                        <br />
+                                        <form id="avatarForm" action="@Url.Action("ChangeAvatar", "EmployeeAccounts")" method="post" enctype="multipart/form-data">
+                                            <div class="file-input-wrapper">
+                                                <input type="file" id="avatarFile" name="AvatarFile" accept="image/*" onchange="previewAvatar(this)" />
+                                                <label for="avatarFile" class="file-input-label">
+                                                    <i class="bi bi-camera"></i> Chọn ảnh
+                                                </label>
+                                            </div>
+                                            <div id="selectedFile" class="selected-file"></div>
+                                            <br />
+                                            <button type="submit" class="btn-kfc-update" disabled id="updateBtn">
+                                                <i class="bi bi-check-circle"></i> Cập nhật
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="info-section">
+                        <h4 class="section-title">Thông tin cá nhân</h4>
+                        <table class="table info-table">
+                            <tr>
+                                <th>Họ tên</th>
+                                <td>@Model.Employee.FirstName @Model.Employee.LastName</td>
+                            </tr>
+                            <tr>
+                                <th>Ngày sinh</th>
+                                <td>@Model.Employee.Birthday.ToString("dd/MM/yyyy")</td>
+                            </tr>
+                            <tr>
+                                <th>Giới tính</th>
+                                <td>@(Model.Employee.Gender ? "Nam" : "Nữ")</td>
+                            </tr>
+                            <tr>
+                                <th>Điện thoại</th>
+                                <td>@Model.Employee.Phone</td>
+                            </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>@Model.Employee.Email</td>
+                            </tr>
+                            <tr>
+                                <th>Địa chỉ</th>
+                                <td>@Model.Employee.Address</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            @{
+                var today = DateTime.Today;
+                int diff = (7 + (int)today.DayOfWeek - (int)DayOfWeek.Monday) % 7;
+                var startOfWeek = today.AddDays(-diff);
+                var endOfWeek = startOfWeek.AddDays(6);
+
+                var currentWeekLogs = Model.WorkLogs
+                    .Where(log => log.WorkDate >= startOfWeek && log.WorkDate <= endOfWeek)
+                    .OrderBy(log => log.WorkDate)
+                    .ToList();
+            }
+
+            @if (currentWeekLogs.Any())
+            {
+                <div class="info-section">
+                    <h4 class="section-title">Lịch làm việc</h4>
+                    <table class="table schedule-table">
+                        <thead>
+                            <tr>
+                                <th>Ngày</th>
+                                <th>Ca làm</th>
+                                <th>Giờ vào</th>
+                                <th>Giờ ra</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var log in Model.WorkLogs)
+                            {
+                                <tr>
+                                    <td>@log.WorkDate.ToString("dd/MM/yyyy")</td>
+                                    <td>@log.ShiftName</td>
+                                    <td>@(log.TimeIn?.ToString(@"hh\:mm") ?? "-")</td>
+                                    <td>@(log.TimeOut?.ToString(@"hh\:mm") ?? "-")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+
+            <div class="info-section">
+                <div class="action-buttons">
+                    <a href="@Url.Action("ChangePassword", "EmployeeAccounts")" class="btn-kfc-primary">
+                        <i class="bi bi-key-fill"></i> Đổi mật khẩu
+                    </a>
+                    <a href="@Url.Action("Logout", "EmployeeAccounts")" class="btn-kfc-secondary">
+                        <i class="bi bi-box-arrow-right"></i> Đăng xuất
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/ScriptPage/EmployeeAccounts.js"></script>
+}

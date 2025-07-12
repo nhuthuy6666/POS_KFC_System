@@ -1,0 +1,73 @@
+﻿@model POS_KFC.Models.WorkLog
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<link href="~/Content/css/CreateWorkLogs.css" rel="stylesheet" type="text/css" />
+
+<div class="container">
+    <div class="header-section">
+        <h2>Tạo lịch làm việc</h2>
+        <div class="subtitle">Quản lý ca làm việc nhân viên KFC</div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.EmployeeId)
+
+        <div class="form-container">
+            <div class="form-row">
+                <div class="form-label">Ngày làm việc</div>
+                <div class="form-input">
+                    @Html.EditorFor(model => model.WorkDate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                    @Html.ValidationMessageFor(model => model.WorkDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-label">Ca làm việc</div>
+                <div class="form-input">
+                    @Html.DropDownListFor(model => model.ShiftName, new SelectList(new[]
+                    {
+                        new { Value = "Ca sáng", Text = "Ca sáng" },
+                        new { Value = "Ca trưa", Text = "Ca trưa" },
+                        new { Value = "Ca chiều", Text = "Ca chiều" }
+                    }, "Value", "Text"), "-- Chọn ca làm việc --", new { @class = "form-control", @id = "shiftSelector" })
+                    @Html.ValidationMessageFor(model => model.ShiftName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-label">Giờ vào làm</div>
+                <div class="form-input">
+                    @Html.TextBoxFor(model => model.TimeIn, new { @class = "form-control", @readonly = "readonly", @id = "timeIn", @placeholder = "Sẽ được tự động điền khi chọn ca" })
+                    @Html.ValidationMessageFor(model => model.TimeIn, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-label">Giờ ra về</div>
+                <div class="form-input">
+                    @Html.TextBoxFor(model => model.TimeOut, new { @class = "form-control", @readonly = "readonly", @id = "timeOut", @placeholder = "Sẽ được tự động điền khi chọn ca" })
+                    @Html.ValidationMessageFor(model => model.TimeOut, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="shift-info" id="shiftInfo" style="display: none;">
+                <h4>Thông tin ca làm việc</h4>
+                <p id="shiftDetails"></p>
+            </div>
+
+            <div class="action-buttons">
+                <input type="submit" value="Lưu lịch làm việc" class="btn btn-danger" />
+                @Html.ActionLink("Quay lại", "Details", "Employees", new { id = Model.EmployeeId }, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/ScriptPage/CreateWorkLogs.js"></script>
+}

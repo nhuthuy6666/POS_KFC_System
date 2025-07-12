@@ -1,0 +1,69 @@
+﻿@model POS_KFC.Models.EmployeeAccount
+
+@{
+    ViewBag.Title = "Tạo tài khoản";
+}
+
+<link href="~/Content/css/CreateAccount.css" rel="stylesheet" type="text/css" />
+
+<div class="container">
+    <h2><i class="bi bi-person-plus"></i> Tạo tài khoản</h2>
+
+    @using (Html.BeginForm("Create", "EmployeeAccounts", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Tài khoản nhân viên</h4>
+            <hr />
+            @Html.HiddenFor(model => model.EmployeeId)
+
+            <div class="form-group">
+                @Html.Label("Avatar", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="file" name="AvatarUpload" accept="image/*" />
+                    <img id="avatarPreview" src="#" alt="Ảnh xem trước" style="display:none; max-width: 200px; margin-top: 15px; border-radius: 12px; box-shadow: var(--shadow-sm);" />
+                    @Html.ValidationMessage("AvatarUpload", "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Tên đăng nhập</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.AccountName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.AccountName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Mật khẩu</label>
+                <div class="col-md-10">
+                    @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Nhập lại mật khẩu</label>
+                <div class="col-md-10">
+                    <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" />
+                    <span class="text-danger field-validation-valid" data-valmsg-for="ConfirmPassword" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Tạo tài khoản" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <div>
+        <a href="@Url.Action("Details", "Employees", new { id = Model.EmployeeId })" class="btn btn-secondary">Quay lại</a>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/ScriptPage/CreateAccount.js"></script>
+}

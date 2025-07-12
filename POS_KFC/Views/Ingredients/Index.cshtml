@@ -1,0 +1,137 @@
+﻿@model IEnumerable<POS_KFC.Models.Ingredient>
+
+@{
+    ViewBag.Title = "Quản lý kho";
+}
+
+<link href="~/Content/css/Ingredients.css" rel="stylesheet" type="text/css" />
+
+<div class="container">
+    <div class="page-header">
+        <div class="container">
+            <h1 class="text-center"><i class="bi bi-box-seam"></i> Kho hàng KFC</h1>
+        </div>
+    </div>
+
+    <div class="row order-section">
+        <!-- Danh sách nguyên liệu -->
+        <div class="col-lg-7 mb-4">
+            <h4>Danh sách nguyên liệu</h4>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Nguyên liệu</th>
+                        <th>Đơn giá</th>
+                        <th>Số lượng</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="orderTable">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            @using (Html.BeginForm("UpdateIngredient", "Ingredients", FormMethod.Post))
+                            {
+                                @Html.Hidden("id", item.IngredientId)
+                                <td>@Html.DisplayFor(modelItem => item.IngredientName)</td>
+                                <td>
+                                    <input type="number"
+                                           name="newPrice"
+                                           class="form-control"
+                                           value="@item.Price"
+                                           min="0"
+                                           step="100"
+                                           style="width: 100px;" />
+                                </td>
+                                <td>
+                                    <input type="number"
+                                           name="newQuantity"
+                                           class="form-control"
+                                           value="@item.Quantity"
+                                           min="0"
+                                           style="width: 100px;" />
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-sm btn-primary">Lưu</button>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <!-- Pagination Summary for Ingredients -->
+            <div class="d-flex justify-content-between align-items-center p-3 border-top">
+                <div>
+                    <span id="ingredientPaginationInfo">Hiển thị 0 đến 0 trên tổng số 0</span>
+                </div>
+                <div id="ingredientPagination" class="pagination mb-0"></div>
+            </div>
+
+        </div>
+
+        <!-- Form tạo mới nguyên liệu -->
+        <div class="col-lg-5">
+            <h4>Thêm nguyên liệu mới</h4>
+            @using (Html.BeginForm("Create", "Ingredients", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    @Html.Label("Tên nguyên liệu")
+                    @Html.TextBox("IngredientName", null, new { @class = "form-control", placeholder = "Nhập tên nguyên liệu" })
+                    @Html.ValidationMessage("IngredientName", "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.Label("Đơn giá")
+                    @Html.TextBox("Price", null, new { @class = "form-control", type = "number", min = "0", step = "100", placeholder = "VD: 10000" })
+                    @Html.ValidationMessage("Price", "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.Label("Số lượng")
+                    @Html.TextBox("Quantity", null, new { @class = "form-control", type = "number", min = "0", placeholder = "VD: 10" })
+                    @Html.ValidationMessage("Quantity", "", new { @class = "text-danger" })
+                </div>
+                <button type="submit" class="btn btn-success mt-2">Thêm mới</button>
+            }
+
+            <hr />
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="mb-0">Danh sách đơn hàng</h4>
+                <a href="@Url.Action("Create", "StoreOrders")" class="btn btn-sm btn-success">
+                    + Kê khai đơn
+                </a>
+            </div>
+
+            <table class="table table-striped table-bordered" id="storeOrderTable">
+                <thead>
+                    <tr>
+                        <th>Mã đơn</th>
+                        <th>Ngày đặt</th>
+                        <th>Tổng tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in ViewBag.StoreOrders as List<POS_KFC.Models.StoreOrder>)
+                    {
+                        <tr class="store-order-row" data-id="@order.StoreOrderId">
+                            <td>@order.StoreOrderId</td>
+                            <td>@order.OrderDate.ToString("dd/MM/yyyy")</td>
+                            <td>@String.Format("{0:N0} đ", order.TotalPrice)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <!-- Pagination Summary -->
+            <div class="d-flex justify-content-between align-items-center p-3 border-top">
+                <div>
+                    <span id="paginationInfo">Hiển thị 0 đến 0 trên tổng số 0</span>
+                </div>
+                <div id="pagination" class="pagination mb-0"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/ScriptPage/Ingredients.js"></script>
+}

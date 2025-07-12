@@ -1,0 +1,79 @@
+﻿@model IEnumerable<POS_KFC.Models.Employee>
+
+@{
+    ViewBag.Title = "Danh sách nhân viên";
+}
+
+<link href="~/Content/css/Employees.css" rel="stylesheet" type="text/css" />
+
+<div class="container">
+    <div class="page-header">
+        <div class="container">
+            <h2 class="text-center"><i class="bi bi-person"></i> Nhân viên KFC</h2>
+        </div>
+    </div>
+
+    <div class="button-wrapper">
+        <a class="create-btn" href="@Url.Action("Create")">+ Thêm nhân viên</a>
+    </div>
+
+    <form method="get" action="@Url.Action("Index")" class="search-form">
+        <input type="text" name="name" class="form-control" placeholder="Tìm theo tên..." value="@Request.QueryString["name"]" />
+
+        <select name="gender" class="form-select">
+            <option value="">-- Giới tính --</option>
+            <option value="true" @(Request["gender"] == "true" ? "selected" : "")>Nam</option>
+            <option value="false" @(Request["gender"] == "false" ? "selected" : "")>Nữ</option>
+        </select>
+
+        <select name="position" class="form-select">
+            <option value="">-- Chức vụ --</option>
+            @foreach (var position in ViewBag.Positions as List<POS_KFC.Models.Position>)
+            {
+                <option value="@position.PositionId" @(Request.QueryString["position"] == position.PositionId.ToString() ? "selected" : "")>
+                    @position.PositionName
+                </option>
+            }
+        </select>
+
+        <button type="submit">Tìm kiếm</button>
+    </form>
+
+    <div class="employee-grid" id="employeeGrid">
+        @foreach (var item in Model)
+        {
+            <div class="employee-card">
+                <div class="employee-header">
+                    <div class="avatar">
+                        @item.FirstName[0]@item.LastName[0]
+                    </div>
+                    <div class="employee-name">
+                        @item.FirstName @item.LastName
+                    </div>
+                </div>
+                <div class="employee-body">
+                    <div class="employee-info"><strong>Chức vụ:</strong> @item.Position.PositionName</div>
+                    <div class="employee-info"><strong>Ngày sinh:</strong> @item.Birthday.ToShortDateString()</div>
+                    <div class="employee-info"><strong>Điện thoại:</strong> @item.Phone</div>
+                    <div class="employee-info"><strong>Email:</strong> @item.Email</div>
+                </div>
+                <div class="employee-actions">
+                    <a href="@Url.Action("Edit", new { id = item.EmployeeId })" class="btn-edit">Sửa</a>
+                    <a href="@Url.Action("Details", new { id = item.EmployeeId })" class="btn-detail">Chi tiết</a>
+                    <a href="@Url.Action("Delete", new { id = item.EmployeeId })" class="btn-delete">Xóa</a>
+                </div>
+            </div>
+        }
+    </div>
+    <!-- Pagination Summary -->
+    <div class="d-flex justify-content-between align-items-center p-3 border-top">
+        <div>
+            <span id="paginationInfo">Hiển thị 0 đến 0 trên tổng số 0</span>
+        </div>
+        <div id="pagination" class="pagination mb-0"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/ScriptPage/Employee.js"></script>
+}

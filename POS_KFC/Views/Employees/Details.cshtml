@@ -1,0 +1,191 @@
+﻿@model POS_KFC.Models.Employee
+
+@{
+    ViewBag.Title = "Chi tiết nhân viên";
+    var hasAccount = Model.EmployeeAccounts != null && Model.EmployeeAccounts.Any();
+    var hasWorkLogs = Model.WorkLogs != null && Model.WorkLogs.Any();
+    var avatarPath = Model.EmployeeAccounts?.FirstOrDefault()?.Avatar;
+}
+
+<link href="~/Content/css/DetailEmployees.css" rel="stylesheet" type="text/css" />
+
+<div class="container">
+    <div class="page-header">
+        <div class="container">
+            <h2 class="text-center">Chi tiết Nhân viên</h2>
+        </div>
+    </div>
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb-nav">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a href="@Url.Action("Index")">
+                        <i class="bi bi-house-door me-1"></i>Danh sách nhân viên
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <i class="bi bi-info-circle me-1"></i>Chi tiết
+                </li>
+            </ol>
+        </nav>
+    </div>
+    <div class="row">
+        <!-- Thông tin nhân viên -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4>Thông tin cá nhân</h4>
+                </div>
+                <div class="card-body">
+                    <div class="employee-name">
+                        <i class="bi bi-person-circle me-2"></i> @Model.FirstName @Model.LastName
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">Ngày sinh</div>
+                            <div class="info-value">@Model.Birthday.ToString("dd/MM/yyyy")</div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-label">Giới tính</div>
+                            <div class="info-value">@((Model.Gender) ? "Nam" : "Nữ")</div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-label">SĐT</div>
+                            <div class="info-value">@Model.Phone</div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-label">Email</div>
+                            <div class="info-value">@Model.Email</div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-label">Địa chỉ</div>
+                            <div class="info-value">@Model.Address</div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-label">Chức vụ</div>
+                            <div class="info-value">@Model.Position.PositionName</div>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        @Html.ActionLink("Sửa thông tin", "Edit", new { id = Model.EmployeeId }, new { @class = "btn btn-warning" })
+                        @Html.ActionLink("Quay lại", "Index", null, new { @class = "btn btn-secondary" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            @Html.AntiForgeryToken()
+
+            <!-- Lịch làm việc -->
+            <div id="worklog-container" data-employee-id="@Model.EmployeeId">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Lịch làm việc</h4>
+                    </div>
+                    <div class="card-body">
+                        @{
+                            var today = DateTime.Today;
+                            int diff = (7 + (int)today.DayOfWeek - (int)DayOfWeek.Monday) % 7;
+                            var startOfWeek = today.AddDays(-diff);
+                            var endOfWeek = startOfWeek.AddDays(6);
+
+                            var currentWeekLogs = Model.WorkLogs
+                                .Where(log => log.WorkDate >= startOfWeek && log.WorkDate <= endOfWeek)
+                                .OrderBy(log => log.WorkDate)
+                                .ToList();
+                        }
+
+                        @if (currentWeekLogs.Any())
+                        {
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Ngày làm việc</th>
+                                        <th>Ca làm việc</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var log in currentWeekLogs)
+                                    {
+                                        <tr>
+                                            <td><strong>@log.WorkDate.ToString("dd/MM/yyyy")</strong></td>
+                                            <td><span class="badge badge-info">@log.ShiftName</span></td>
+                                            <td>
+                                                <div class="btn-group" style="margin-top: 0; gap: 0.25rem;">
+                                                    <button class="btn btn-outline-danger btn-sm btn-delete-worklog" data-id="@log.WorkLogId">Xóa</button>
+                                                    @Html.ActionLink("Thêm", "Create", "WorkLogs", new { employeeId = log.EmployeeId }, new { @class = "btn btn-outline-danger btn-sm" })
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <div class="empty-state">
+                                <p>Chưa đăng ký lịch làm việc trong tuần</p>
+                                @Html.ActionLink("Tạo lịch làm việc", "Create", "WorkLogs", new { employeeId = Model.EmployeeId }, new { @class = "btn btn-danger" })
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <!-- Tài khoản -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4>Tài khoản hệ thống</h4>
+                </div>
+                <div class="card-body" id="account-table-container" data-employee-id="@Model.EmployeeId">
+                    @if (hasAccount)
+                    {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Tài khoản</th>
+                                    <th>Mật khẩu</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var acc in Model.EmployeeAccounts)
+                                {
+                                    <tr>
+                                        <td><strong>@acc.AccountName</strong></td>
+                                        <td>
+                                            <input type="password" value="@acc.Password" readonly class="form-control-plaintext" style="border: none; background: transparent;" />
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger btn-sm delete-account-btn" data-id="@acc.EmployeeAccountId">Xóa</button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="empty-state">
+                            <p>Nhân viên chưa có tài khoản hệ thống</p>
+                            @Html.ActionLink("Tạo tài khoản", "Create", "EmployeeAccounts", new { employeeId = Model.EmployeeId }, new { @class = "btn btn-danger" })
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/Scripts/ScriptPage/DetailEmployees.js"></script>
+}
+
